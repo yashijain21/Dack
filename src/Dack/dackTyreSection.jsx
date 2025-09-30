@@ -62,13 +62,13 @@ const TireSection = () => {
       title: "Sommardäck",
       description: "Från ledande varumärken.",
       image: summerTyre,
-      link: "/sommardack",
+      link: "/Dack/sommardack",
     },
     {
       title: "Vinterdäck",
       description: "Säkra och noggrant testade.",
       image: winterTyre,
-      link: "/vinterdack",
+      link: "/Dack/vinterdack",
     },
     {
       title: "Sommarhjul",

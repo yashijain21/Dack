@@ -1,5 +1,5 @@
 // src/Pages/SummerTyresPage.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   ChevronDown,
@@ -11,6 +11,8 @@ import {
   Fuel,
   X,
   SlidersHorizontal,
+  Grid,
+  List,
 } from "lucide-react";
 import demoImage from "../assets/Demo/product-demo-image.avif";
 import summerTyre from "../assets/Pages/SummerTyres/changing-tyres.avif";
@@ -160,7 +162,7 @@ const faqs = [
   {
     question: "Vad är minsta tillåtna mönsterdjup för sommardäck?",
     answer: [
-      "Minsta mönsterdjup som lagen kräver på sommardäck är 1,6 mm. Om mönstret nötts ner till nivån för indikatorn är det dags att byta däck. Men vi rekommenderar däckbyte innan den nås, vid 4 mm för att vara på den säkra sidan.Med slitna däck ökar risken för vattenplaning, och även bromsförmågan försämras. Kontrollera däckens mönsterdjup, lufttryck, skador och tecken på oregelbundet slitage regelbundet. Mät alltid mönsterdjup där däcket är som mest slitet.Kom ihåg att alltid anpassa hastigheten och körning till väder- och trafikförhållanden.",
+      "Minsta mönsterdjup som lagen kräver på sommardäck är 1,6 mm. Om mönstret nötts ner till nivån för indikatorn är det dags att byta däck. Men vi rekommenderar däckbyte innan den nås, vid 4 mm för att vara på den säkra sidan.Med slitna däck ökar risken för vattenplaning, och även bromsförmågan försämras. Kontrollera däckens mönsterdjup, lufttryck, skador och tecken på oregelbundet slitage regelbundet. Mät alltid mönsterdjup där däcket är som mest slitet.Kom ihåg att alltid anpassa hastigheten och körning till väger- och trafikförhållanden.",
     ],
   },
   {
@@ -257,26 +259,47 @@ const SummerTyresPage = () => {
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedFeatures, setSelectedFeatures] = useState([]);
   const [sortBy, setSortBy] = useState("most-visited");
+  const [trademarkModalOpen, setTrademarkModalOpen] = useState(false);
+  const [priceModalOpen, setPriceModalOpen] = useState(false);
+  const [viewMode, setViewMode] = useState("grid"); // "grid" or "list"
+  const [modalPriceRange, setModalPriceRange] = useState([1000, 10000]);
+
+  const min = 1000;
+  const max = 10000;
+
+  // Initialize modal price range when modal opens
+  useEffect(() => {
+    if (priceModalOpen) {
+      setModalPriceRange(priceRange);
+    }
+  }, [priceModalOpen, priceRange]);
+
+  const leftPercent = ((modalPriceRange[0] - min) / (max - min)) * 100;
+  const rightPercent = ((modalPriceRange[1] - min) / (max - min)) * 100;
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   const allFilters = [
-    "Trademark",
-    "Price",
-    "Original tires",
-    "Fits type of car",
-    "Fuel economy",
-    "Wet grip",
-    "Sound level",
-    "Unique protection from the manufacturer",
-    "Load index",
-    "Speed index",
-    "Sound-absorbing deck",
+    "Varumärke",
+    "Pris",
+    "Originaldäck",
+    "Passar typ av bil",
+    "Bränsleekonomi",
+    "Våtgrepp",
+    "Ljudnivå",
+    "Unikt skydd från tillverkaren",
+    "Belastningsindex",
+    "Hastighetsindex",
+    "Ljuddämpat däck",
   ];
 
-  const trademarkOptions = [
+  const PassartypavbilOption = [
+    { label: "Personbil", count: 353 }
+  ]
+
+  const VarumärkeOptions = [
     { label: "Michelin", count: 110 },
     { label: "Pirelli", count: 93 },
     { label: "Continental", count: 79 },
@@ -292,22 +315,19 @@ const SummerTyresPage = () => {
     { label: "Reinforced deck", count: 319 },
   ];
 
-    const OriginalTyresOption = [
-
-  // Car brands
-  { label: "Mercedes-Benz", count: 72 },
-  { label: "BMW", count: 66 },
-  { label: "Audi", count: 46 },
-  { label: "Porsche", count: 23 },
-  { label: "Volvo", count: 19 },
-  { label: "Jaguar", count: 16 },
-  { label: "Polestar", count: 15 },
-  { label: "Land Rover", count: 14 },
-  { label: "Volkswagen", count: 11 },
-  { label: "Ferrari", count: 8 },
-  { label: "Bentley", count: 1 },
-];
-
+  const OriginaldäckOption = [
+    { label: "Mercedes-Benz", count: 72 },
+    { label: "BMW", count: 66 },
+    { label: "Audi", count: 46 },
+    { label: "Porsche", count: 23 },
+    { label: "Volvo", count: 19 },
+    { label: "Jaguar", count: 16 },
+    { label: "Polestar", count: 15 },
+    { label: "Land Rover", count: 14 },
+    { label: "Volkswagen", count: 11 },
+    { label: "Ferrari", count: 8 },
+    { label: "Bentley", count: 1 },
+  ];
 
   const handleBrandToggle = (brand) => {
     setSelectedBrands(prev =>
@@ -329,6 +349,33 @@ const SummerTyresPage = () => {
     setSelectedBrands([]);
     setSelectedFeatures([]);
     setPriceRange([1000, 10000]);
+  };
+
+  // Handle price change in modal
+  const handleModalPriceChange = (index, value) => {
+    const newValue = Math.max(min, Math.min(max, Number(value)));
+    const newRange = [...modalPriceRange];
+    newRange[index] = newValue;
+
+    // Ensure min <= max
+    if (index === 0 && newValue > modalPriceRange[1]) {
+      newRange[1] = newValue;
+    } else if (index === 1 && newValue < modalPriceRange[0]) {
+      newRange[0] = newValue;
+    }
+
+    setModalPriceRange(newRange);
+  };
+
+  // Apply modal price range to main filter
+  const applyModalPriceRange = () => {
+    setPriceRange(modalPriceRange);
+    setPriceModalOpen(false);
+  };
+
+  // Reset modal price range
+  const resetModalPriceRange = () => {
+    setModalPriceRange([min, max]);
   };
 
   // Filter products based on selected filters
@@ -368,26 +415,187 @@ const SummerTyresPage = () => {
     }
   });
 
-  const shortText = `With us you will find a wide range of summer tires from leading brands
-  such as Goodyear, Continental, Barum, Michelin, Pirelli, Bridgestone,
-  Nordman and Nokian. Everything to ensure you drive safely on the roads.`;
+  const shortText = `Hos oss hittar du ett brett sortiment av sommardäck från ledande varumärken som Goodyear, Continental, Barum, Michelin, Pirelli, Bridgestone, Nordman och Nokian. Allt för att du ska köra säkert på vägarna.`;
 
   const fullText = `
 Hos oss hittar du ett brett sortiment av sommardäck från ledande varumärken som Goodyear, Continental, Barum, Michelin, Pirelli, Bridgestone, Nordman och Nokian. Allt för att du ska köra säkert på vägarna.
 
 Sommardäck har olika kvaliteter och egenskaper. Mjukare gummi i slitbanan ger bättre grepp men slits fortare. Styvare stomme ger bättre stabilitet men gör att du känner av vägens ojämnheter något mer. Vi ger dig gärna råd och tips för att du ska hitta det perfekta sommardäcket för dig och din bil.
 
+ 
+
 Hur väljer jag rätt sommardäck?
 Det finns inget däck som är bäst på allt. Med stöd av EU-klassificeringen så får du hjälp att kunna välja rätt däck utifrån däckets egenskaper - bränsleeffektivitet, väggrepp på våt väg och utvändigt däckljud. Läs mer om märkningen här. 
 
+ 
+
 För att säkerhetssystem som ABS och Pedestrian Detection ska fungera på bästa sätt och ge dig högsta säkerhet så måste däcken ha optimalt grepp med vägbanan. Vi rekommenderar därför att följa biltillverkarens rekommendationer för att uppnå bästa säkerhet och köregenskaper för din bil.
+
+ 
 
 Många av våra bilmärken har originaldäck (OE-däck) som är framtagna efter biltillverkarnas specifika krav och specifikationer. Dessa däck har en extra märkning på däcksidan, exempelvis VOL för Volvo och * för BMW. Vi rekommenderar att man alltid väljer ett OE däck till de bilmodeller där det alternativet finns. Då får du det däck som är bäst anpassat till din bil.
 
+ 
+
 Ange ditt registreringsnummer så får du enbart träff på däck som passar just din bil. Om du är osäker så är det alltid bäst att kontrollera vad dina nuvarande däck har för dimension.
+
+ 
 
 Om du behöver hjälp så kan du alltid kontakta oss via chatt, mail eller på 0771 - 400 000 så hjälper vi dig till rätt val.
 `;
+
+  // Product Card Component for Grid View
+  const ProductGridCard = ({ product }) => (
+    <div className="group bg-[#1a1a1a] border border-gray-700 shadow-sm hover:shadow-orange-500/20 
+                   rounded-xl p-4 flex flex-col transition-all duration-300 hover:-translate-y-1 hover:border-orange-500">
+      {/* Image */}
+      <div className="relative flex items-center justify-center p-3 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] rounded-xl shadow-inner overflow-hidden">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-28 h-28 object-contain transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-1"
+        />
+        {/* Glow effect */}
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+      </div>
+
+      {/* Category Badge */}
+      <span className="mt-3 inline-flex items-center gap-1 bg-orange-500/20 text-orange-500 text-[11px] px-2.5 py-1 rounded-full font-medium w-max">
+        <Droplets size={11} className="text-orange-500" />
+        Summer tires
+      </span>
+
+      {/* Title */}
+      <h2 className="font-semibold text-base mt-2 text-white leading-snug line-clamp-2 group-hover:text-orange-500 transition-colors">
+        {product.name}
+      </h2>
+
+      {/* Size */}
+      <p className="text-xs text-gray-400">{product.size}</p>
+
+      {/* Specs row */}
+      <div className="flex flex-wrap gap-1.5 mt-3">
+        <div className="flex items-center gap-1 text-[11px] bg-[#2a2a2a] border border-gray-600 px-2 py-0.5 rounded-full shadow-sm">
+          <Fuel size={12} className="text-orange-500" />
+          <span className="text-white">{product.specs[0]}</span>
+        </div>
+        <div className="flex items-center gap-1 text-[11px] bg-[#2a2a2a] border border-gray-600 px-2 py-0.5 rounded-full shadow-sm">
+          <Volume2 size={12} className="text-orange-500" />
+          <span className="text-white">{product.specs[1]}</span>
+        </div>
+        <div className="flex items-center gap-1 text-[11px] bg-[#2a2a2a] border border-gray-600 px-2 py-0.5 rounded-full shadow-sm">
+          <Droplets size={12} className="text-orange-500" />
+          <span className="text-white">{product.specs[2]}</span>
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div className="border-t border-gray-700 mt-4"></div>
+
+      {/* Delivery */}
+      <div className="flex items-center text-gray-400 text-xs mt-2">
+        <Truck size={14} className="mr-1 text-orange-500" />
+        <span>Varying delivery times</span>
+      </div>
+
+      {/* Price */}
+      <p className="mt-3 font-bold text-lg text-orange-500">
+        From {product.price}
+        <span className="text-gray-400 text-xs font-normal"> /pc</span>
+      </p>
+
+      {/* CTA Button */}
+      <button
+        className="mt-auto self-end p-2.5 bg-orange-500 text-white rounded-full 
+                     shadow-sm hover:shadow-md transition-all duration-300 hover:scale-110 hover:bg-orange-600"
+      >
+        <ArrowRight size={16} />
+      </button>
+    </div>
+  );
+
+  // Product Card Component for List View - Responsive
+  const ProductListCard = ({ product }) => (
+    <div className="group bg-[#1a1a1a] border border-gray-700 shadow-sm hover:shadow-orange-500/20 
+                   rounded-xl p-4 lg:p-6 flex flex-col lg:flex-row gap-4 lg:gap-6 transition-all duration-300 hover:-translate-y-1 hover:border-orange-500">
+      {/* Image */}
+      <div className="relative flex items-center justify-center p-3 lg:p-4 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] rounded-xl shadow-inner overflow-hidden lg:min-w-[180px]">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-24 h-24 lg:w-32 lg:h-32 object-contain transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-1"
+        />
+        {/* Glow effect */}
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 flex flex-col">
+        {/* Category Badge */}
+        <span className="inline-flex items-center gap-1 bg-orange-500/20 text-orange-500 text-[11px] px-2.5 py-1 rounded-full font-medium w-max mb-3">
+          <Droplets size={11} className="text-orange-500" />
+          Summer tires
+        </span>
+
+        {/* Title and Size */}
+        <div className="mb-3 lg:mb-4">
+          <h2 className="font-semibold text-lg lg:text-xl mb-1 text-white leading-snug group-hover:text-orange-500 transition-colors">
+            {product.name}
+          </h2>
+          <p className="text-xs lg:text-sm text-gray-400">{product.size}</p>
+        </div>
+
+        {/* Specs row */}
+        <div className="flex flex-wrap gap-2 mb-3 lg:mb-4">
+          <div className="flex items-center gap-1 text-xs lg:text-sm bg-[#2a2a2a] border border-gray-600 px-2 lg:px-3 py-1 rounded-full shadow-sm">
+            <Fuel size={12} className="text-orange-500" />
+            <span className="text-white">Fuel: {product.specs[0]}</span>
+          </div>
+          <div className="flex items-center gap-1 text-xs lg:text-sm bg-[#2a2a2a] border border-gray-600 px-2 lg:px-3 py-1 rounded-full shadow-sm">
+            <Volume2 size={12} className="text-orange-500" />
+            <span className="text-white">Noise: {product.specs[1]}</span>
+          </div>
+          <div className="flex items-center gap-1 text-xs lg:text-sm bg-[#2a2a2a] border border-gray-600 px-2 lg:px-3 py-1 rounded-full shadow-sm">
+            <Droplets size={12} className="text-orange-500" />
+            <span className="text-white">Wet: {product.specs[2]}</span>
+          </div>
+        </div>
+
+        {/* Features */}
+        <div className="flex gap-2 lg:gap-4 mb-3 lg:mb-4">
+          {product.isPunctureFree && (
+            <span className="px-2 lg:px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs">Puncture-free</span>
+          )}
+          {product.isReinforced && (
+            <span className="px-2 lg:px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-xs">Reinforced</span>
+          )}
+        </div>
+
+        {/* Delivery and Price */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between mt-auto gap-3 lg:gap-4">
+          <div className="flex items-center text-gray-400 text-xs lg:text-sm">
+            <Truck size={14} className="mr-2 text-orange-500" />
+            <span>Varying delivery times</span>
+          </div>
+
+          <div className="flex items-center justify-between lg:justify-end gap-3 lg:gap-4">
+            <p className="font-bold text-lg lg:text-2xl text-orange-500">
+              {product.price}
+              <span className="text-gray-400 text-xs lg:text-sm font-normal ml-1">/pc</span>
+            </p>
+
+            {/* CTA Button */}
+            <button
+              className="p-2 lg:p-3 bg-orange-500 text-white rounded-full 
+                         shadow-sm hover:shadow-md transition-all duration-300 hover:scale-110 hover:bg-orange-600"
+            >
+              <ArrowRight size={16} className="lg:w-5 lg:h-5" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="px-0 bg-[#0d0d0d] min-h-screen poppins-regular text-white relative">
@@ -448,9 +656,9 @@ Om du behöver hjälp så kan du alltid kontakta oss via chatt, mail eller på 0
 
                   {/* Filter Content */}
                   <div className="space-y-6">
-                    {activeFilter === "Trademark" && (
+                    {activeFilter === "Varumärke" && (
                       <div className="space-y-3">
-                        {trademarkOptions.map((item, i) => (
+                        {VarumärkeOptions.map((item, i) => (
                           <label
                             key={i}
                             className="flex items-center justify-between py-2 cursor-pointer group"
@@ -472,9 +680,11 @@ Om du behöver hjälp så kan du alltid kontakta oss via chatt, mail eller på 0
                       </div>
                     )}
 
-                     {activeFilter === "Original tires" && (
+
+
+                    {activeFilter === "Originaldäck" && (
                       <div className="space-y-3">
-                        {OriginalTyresOption.map((item, i) => (
+                        {OriginaldäckOption.map((item, i) => (
                           <label
                             key={i}
                             className="flex items-center justify-between py-2 cursor-pointer group"
@@ -496,81 +706,31 @@ Om du behöver hjälp så kan du alltid kontakta oss via chatt, mail eller på 0
                       </div>
                     )}
 
-                    {activeFilter === "Price" && (
-                      <div className="space-y-6">
-                        {/* Price Range Slider */}
-                        <div className="space-y-4">
-                          <div className="flex justify-between text-sm text-gray-400">
-                            <span>{priceRange[0]} SEK</span>
-                            <span>{priceRange[1]} SEK</span>
-                          </div>
 
-                          <div className="relative">
-                            {/* Track */}
-                            <div className="h-1 bg-gray-700 rounded-full"></div>
-
-                            {/* Active Range */}
-                            <div
-                              className="absolute top-0 h-1 bg-orange-500 rounded-full"
-                              style={{
-                                left: `${((priceRange[0] - 1000) / 9000) * 100}%`,
-                                width: `${((priceRange[1] - priceRange[0]) / 9000) * 100}%`
-                              }}
-                            ></div>
-
-                            {/* Thumbs */}
-                            <input
-                              type="range"
-                              min="1000"
-                              max="10000"
-                              value={priceRange[0]}
-                              onChange={(e) => setPriceRange([+e.target.value, priceRange[1]])}
-                              className="absolute top-0 w-full h-1 opacity-0 cursor-pointer"
-                            />
-                            <input
-                              type="range"
-                              min="1000"
-                              max="10000"
-                              value={priceRange[1]}
-                              onChange={(e) => setPriceRange([priceRange[0], +e.target.value])}
-                              className="absolute top-0 w-full h-1 opacity-0 cursor-pointer"
-                            />
-
-                            {/* Custom Thumbs */}
-                            <div
-                              className="absolute top-1/2 w-4 h-4 bg-orange-500 border-2 border-white rounded-full shadow-lg transform -translate-y-1/2"
-                              style={{ left: `${((priceRange[0] - 1000) / 9000) * 100}%` }}
-                            ></div>
-                            <div
-                              className="absolute top-1/2 w-4 h-4 bg-orange-500 border-2 border-white rounded-full shadow-lg transform -translate-y-1/2"
-                              style={{ left: `${((priceRange[1] - 1000) / 9000) * 100}%` }}
-                            ></div>
-                          </div>
-                        </div>
-
-                        {/* Price Inputs */}
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-sm text-gray-400 mb-1">Min</label>
-                            <input
-                              type="number"
-                              value={priceRange[0]}
-                              onChange={(e) => setPriceRange([+e.target.value, priceRange[1]])}
-                              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-orange-500"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-sm text-gray-400 mb-1">Max</label>
-                            <input
-                              type="number"
-                              value={priceRange[1]}
-                              onChange={(e) => setPriceRange([priceRange[0], +e.target.value])}
-                              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-orange-500"
-                            />
-                          </div>
-                        </div>
+                    {activeFilter === "Passar typ av bil" && (
+                      <div className="space-y-3">
+                        {PassartypavbilOption.map((item, i) => (
+                          <label
+                            key={i}
+                            className="flex items-center justify-between py-2 cursor-pointer group"
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="relative">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedBrands.includes(item.label)}
+                                  onChange={() => handleBrandToggle(item.label)}
+                                  className="w-4 h-4 text-orange-500 bg-gray-800 border-gray-600 rounded focus:ring-orange-500 focus:ring-2"
+                                />
+                              </div>
+                              <span className="text-gray-300 group-hover:text-white">{item.label}</span>
+                            </div>
+                            <span className="text-sm text-gray-500">{item.count}</span>
+                          </label>
+                        ))}
                       </div>
                     )}
+
 
                     {activeFilter === "Sound-absorbing deck" && (
                       <div className="space-y-3">
@@ -594,12 +754,10 @@ Om du behöver hjälp så kan du alltid kontakta oss via chatt, mail eller på 0
                       </div>
                     )}
 
+
+
                     {/* Placeholder for other filters */}
-                    {!["Trademark", "Price", "Sound-absorbing deck,Original tires"].includes(activeFilter) && (
-                      <div className="text-center py-8 text-gray-400">
-                        <p>Filter options coming soon</p>
-                      </div>
-                    )}
+
                   </div>
                 </div>
               )}
@@ -619,6 +777,272 @@ Om du behöver hjälp så kan du alltid kontakta oss via chatt, mail eller på 0
               >
                 Visa {filteredProducts.length} säkträffar
               </button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Trademark Modal */}
+      {trademarkModalOpen && (
+        <>
+          {/* Overlay */}
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+            onClick={() => setTrademarkModalOpen(false)}
+          ></div>
+
+          {/* Modal */}
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+                    bg-gradient-to-br from-gray-900 to-black border border-gray-700 
+                    rounded-xl shadow-2xl w-full max-w-md z-50">
+
+            {/* Header */}
+            <div className="flex justify-between items-center px-5 py-4 border-b border-gray-700">
+              <div>
+                <h3 className="text-lg font-bold text-white">Trademark</h3>
+                <p className="text-gray-400 text-xs mt-0.5">
+                  Select the brands to filter products
+                </p>
+              </div>
+              <button
+                onClick={() => setTrademarkModalOpen(false)}
+                className="p-1.5 rounded-md hover:bg-gray-800 transition"
+              >
+                <X size={20} className="text-gray-400" />
+              </button>
+            </div>
+
+            {/* Options List */}
+            <div className="overflow-y-auto max-h-[55vh] divide-y divide-gray-700 px-5 py-3">
+              {VarumärkeOptions.map((item, index) => (
+                <label
+                  key={index}
+                  className="flex justify-between items-center py-3 hover:bg-gray-800 cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      checked={selectedBrands.includes(item.label)}
+                      onChange={() => handleBrandToggle(item.label)}
+                      className="w-5 h-5 text-orange-500 border-gray-600 rounded focus:ring-orange-500"
+                    />
+                    <span className="font-medium text-white">{item.label}</span>
+                  </div>
+                  <span className="bg-gray-800 text-gray-400 text-sm px-2 py-0.5 rounded-full">
+                    {item.count}
+                  </span>
+                </label>
+              ))}
+            </div>
+
+            {/* Footer */}
+            <div className="px-5 py-4 border-t border-gray-700 bg-gray-800/50 rounded-b-xl flex justify-between items-center">
+              <button
+                onClick={clearAllFilters}
+                className="text-sm font-medium text-orange-500 hover:underline"
+              >
+                Clear filters
+              </button>
+              <button
+                onClick={() => setTrademarkModalOpen(false)}
+                className="bg-orange-500 text-white font-semibold px-5 py-2 rounded-lg hover:bg-orange-600 transition"
+              >
+                Show {filteredProducts.length} search results
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
+
+      {/* Enhanced Price Modal with proper dragging and input handling */}
+      {priceModalOpen && (
+        <>
+          {/* Overlay */}
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+            onClick={() => setPriceModalOpen(false)}
+          ></div>
+
+          {/* Modal */}
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-gray-900 to-black border border-gray-700 rounded-xl shadow-2xl w-full max-w-md z-50">
+
+            {/* Header */}
+            <div className="flex justify-between items-center px-5 py-4 border-b border-gray-700">
+              <div>
+                <h3 className="text-lg font-bold text-white">Prisspann</h3>
+                <p className="text-gray-400 text-xs mt-0.5">
+                  Justera prisspannet för att filtrera produkter
+                </p>
+              </div>
+              <button
+                onClick={() => setPriceModalOpen(false)}
+                className="p-1.5 rounded-md hover:bg-gray-800 transition"
+              >
+                <X size={20} className="text-gray-400" />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="p-5">
+              {/* Price Display */}
+              <div className="flex justify-between items-center mb-5">
+                <div className="text-center">
+                  <p className="text-gray-400 text-xs">Lägsta pris</p>
+                  <p className="text-lg font-bold text-orange-500">
+                    {modalPriceRange[0].toLocaleString()} SEK
+                  </p>
+                </div>
+                <div className="w-6 h-px bg-gray-600 mx-2"></div>
+                <div className="text-center">
+                  <p className="text-gray-400 text-xs">Högsta pris</p>
+                  <p className="text-lg font-bold text-orange-500">
+                    {modalPriceRange[1].toLocaleString()} SEK
+                  </p>
+                </div>
+              </div>
+
+              {/* Histogram */}
+              <div className="relative w-full h-20 mb-5 bg-gray-800 rounded-lg p-2">
+                <div className="absolute inset-2 flex items-end gap-0.5">
+                  {Array.from({ length: 40 }, (_, i) => {
+                    const height = 10 + Math.sin(i * 0.3) * 20 + Math.random() * 10;
+                    const isInRange = i >= (leftPercent / 100) * 40 && i <= (rightPercent / 100) * 40;
+                    return (
+                      <div
+                        key={i}
+                        className={`flex-1 rounded-t transition-all duration-300 ${isInRange
+                            ? "bg-gradient-to-t from-orange-500 to-orange-600"
+                            : "bg-gradient-to-t from-gray-600 to-gray-700"
+                          }`}
+                        style={{ height: `${height}%` }}
+                      ></div>
+                    );
+                  })}
+                </div>
+                <div
+                  className="absolute top-0 bottom-0 bg-orange-500/10 border-l-2 border-r-2 border-orange-500 pointer-events-none transition-all"
+                  style={{
+                    left: `${leftPercent}%`,
+                    width: `${rightPercent - leftPercent}%`,
+                  }}
+                ></div>
+              </div>
+
+              {/* Enhanced Range Slider */}
+              <div className="relative mb-5">
+                {/* Track */}
+                <div className="absolute w-full h-1.5 bg-gray-700 rounded-full"></div>
+
+                {/* Active Range */}
+                <div
+                  className="absolute h-1.5 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"
+                  style={{
+                    left: `${leftPercent}%`,
+                    width: `${rightPercent - leftPercent}%`,
+                  }}
+                ></div>
+
+                {/* Dual Range Inputs */}
+                <div className="relative">
+                  <input
+                    type="range"
+                    min={min}
+                    max={max}
+                    value={modalPriceRange[0]}
+                    onChange={(e) => handleModalPriceChange(0, e.target.value)}
+                    className="absolute w-full h-2 opacity-0 cursor-pointer z-20"
+                  />
+                  <input
+                    type="range"
+                    min={min}
+                    max={max}
+                    value={modalPriceRange[1]}
+                    onChange={(e) => handleModalPriceChange(1, e.target.value)}
+                    className="absolute w-full h-2 opacity-0 cursor-pointer z-10"
+                  />
+
+                  {/* Custom Thumb for Min */}
+                  <div
+                    className="absolute top-1/2 w-4 h-4 bg-white border-3 border-orange-500 rounded-full shadow-md transform -translate-y-1/2 -translate-x-1/2 cursor-grab active:cursor-grabbing z-30 transition-transform hover:scale-110"
+                    style={{ left: `${leftPercent}%` }}
+                  >
+                    <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white text-[10px] px-1.5 py-0.5 rounded whitespace-nowrap">
+                      {modalPriceRange[0].toLocaleString()} SEK
+                    </div>
+                  </div>
+
+                  {/* Custom Thumb for Max */}
+                  <div
+                    className="absolute top-1/2 w-4 h-4 bg-white border-3 border-orange-500 rounded-full shadow-md transform -translate-y-1/2 -translate-x-1/2 cursor-grab active:cursor-grabbing z-30 transition-transform hover:scale-110"
+                    style={{ left: `${rightPercent}%` }}
+                  >
+                    <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white text-[10px] px-1.5 py-0.5 rounded whitespace-nowrap">
+                      {modalPriceRange[1].toLocaleString()} SEK
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Price Input Fields */}
+              <div className="grid grid-cols-2 gap-4 mt-10">
+                <div>
+                  <label className="block text-xs text-gray-400 mb-1 font-medium">
+                    Lägsta pris (SEK)
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      value={modalPriceRange[0]}
+                      min={min}
+                      max={modalPriceRange[1]}
+                      onChange={(e) => handleModalPriceChange(0, e.target.value)}
+                      className="w-full pl-3 pr-2 py-2 bg-gray-800 border border-gray-600 rounded text-sm text-white focus:outline-none focus:border-orange-500"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-400 mb-1 font-medium">
+                    Högsta pris (SEK)
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      value={modalPriceRange[1]}
+                      min={modalPriceRange[0]}
+                      max={max}
+                      onChange={(e) => handleModalPriceChange(1, e.target.value)}
+                      className="w-full pl-3 pr-2 py-2 bg-gray-800 border border-gray-600 rounded text-sm text-white focus:outline-none focus:border-orange-500"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="px-5 py-4 border-t border-gray-700 bg-gray-800/50 rounded-b-xl">
+              <div className="flex justify-between items-center">
+                <button
+                  onClick={resetModalPriceRange}
+                  className="px-4 py-2 text-orange-500 border border-orange-500 rounded-lg hover:bg-orange-500/10 transition text-sm"
+                >
+                  Återställ filter
+                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setPriceModalOpen(false)}
+                    className="px-4 py-2 text-gray-300 border border-gray-600 rounded-lg hover:border-gray-400 transition text-sm"
+                  >
+                    Avbryt
+                  </button>
+                  <button
+                    onClick={applyModalPriceRange}
+                    className="px-5 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition text-sm font-semibold shadow-md shadow-orange-500/25"
+                  >
+                    Använd filter
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </>
@@ -682,14 +1106,22 @@ Om du behöver hjälp så kan du alltid kontakta oss via chatt, mail eller på 0
             className="px-4 py-2 border border-gray-600 rounded-lg bg-[#1a1a1a] text-gray-300 shadow-sm hover:border-orange-500 transition flex items-center gap-2"
           >
             <SlidersHorizontal size={16} />
-            All filters
+            Alla filter
           </button>
-          <button className="px-4 py-2 border border-gray-600 rounded-lg bg-[#1a1a1a] text-gray-300 shadow-sm hover:border-orange-500 transition">
-            Trademark
+          <button
+            onClick={() => setTrademarkModalOpen(true)}
+            className="px-4 py-2 border border-gray-600 rounded-lg bg-[#1a1a1a] text-gray-300 shadow-sm hover:border-orange-500 transition"
+          >
+            Varumärke
           </button>
-          <button className="px-4 py-2 border border-gray-600 rounded-lg bg-[#1a1a1a] text-gray-300 shadow-sm hover:border-orange-500 transition">
-            Price
+
+          <button
+            onClick={() => setPriceModalOpen(true)}
+            className="px-4 py-2 border border-gray-600 rounded-lg bg-[#1a1a1a] text-gray-300 shadow-sm hover:border-orange-500 transition"
+          >
+            Pris
           </button>
+
         </div>
         <hr className="border-t border-gray-700 mb-4" />
 
@@ -710,7 +1142,7 @@ Om du behöver hjälp så kan du alltid kontakta oss via chatt, mail eller på 0
             ))}
             {(priceRange[0] > 1000 || priceRange[1] < 10000) && (
               <span className="px-3 py-1 bg-orange-500/20 text-orange-500 rounded-full text-sm flex items-center gap-2">
-                {priceRange[0]} - {priceRange[1]} SEK
+                {priceRange[0].toLocaleString()} - {priceRange[1].toLocaleString()} SEK
                 <button onClick={() => setPriceRange([1000, 10000])}>×</button>
               </span>
             )}
@@ -723,100 +1155,59 @@ Om du behöver hjälp så kan du alltid kontakta oss via chatt, mail eller på 0
           </div>
         )}
 
-        {/* Sorting */}
+        {/* Sorting and View Toggle */}
         <div className="flex justify-between items-center mb-6">
           <p className="text-gray-400">{sortedProducts.length} Products</p>
           <div className="flex items-center gap-3">
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-3 py-2 border border-gray-600 rounded-md bg-[#1a1a1a] text-white"
+              className="px-3 py-2 border border-gray-600 rounded-md bg-[#1a1a1a] text-white text-sm"
             >
               <option value="most-visited">Most visited</option>
               <option value="lowest-price">Lowest price</option>
               <option value="highest-price">Highest price</option>
             </select>
-            <div className="flex gap-2">
-              <button className="p-2 border border-gray-600 rounded-md bg-[#1a1a1a] text-white">☰</button>
-              <button className="p-2 border border-gray-600 rounded-md bg-[#1a1a1a] text-white">▦</button>
+            <div className="flex gap-1">
+              <button
+                onClick={() => setViewMode("list")}
+                className={`p-2 border rounded-md transition ${viewMode === "list"
+                  ? "border-orange-500 bg-orange-500/20 text-orange-500"
+                  : "border-gray-600 bg-[#1a1a1a] text-gray-400 hover:border-gray-400"
+                  }`}
+              >
+                <List size={16} />
+              </button>
+              <button
+                onClick={() => setViewMode("grid")}
+                className={`p-2 border rounded-md transition ${viewMode === "grid"
+                  ? "border-orange-500 bg-orange-500/20 text-orange-500"
+                  : "border-gray-600 bg-[#1a1a1a] text-gray-400 hover:border-gray-400"
+                  }`}
+              >
+                <Grid size={16} />
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Products */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {sortedProducts.map((product) => (
-            <div
-              key={product.id}
-              className="group bg-[#1a1a1a] border border-gray-700 shadow-sm hover:shadow-orange-500/20 
-                   rounded-xl p-4 flex flex-col transition-all duration-300 hover:-translate-y-1 hover:border-orange-500"
-            >
-              {/* Image */}
-              <div className="relative flex items-center justify-center p-3 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] rounded-xl shadow-inner overflow-hidden">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-28 h-28 object-contain transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-1"
-                />
-                {/* Glow effect */}
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
-              </div>
+        {/* Products - Grid View */}
+        {viewMode === "grid" && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {sortedProducts.map((product) => (
+              <ProductGridCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
 
-              {/* Category Badge */}
-              <span className="mt-3 inline-flex items-center gap-1 bg-orange-500/20 text-orange-500 text-[11px] px-2.5 py-1 rounded-full font-medium w-max">
-                <Droplets size={11} className="text-orange-500" />
-                Summer tires
-              </span>
-
-              {/* Title */}
-              <h2 className="font-semibold text-base mt-2 text-white leading-snug line-clamp-2 group-hover:text-orange-500 transition-colors">
-                {product.name}
-              </h2>
-
-              {/* Size */}
-              <p className="text-xs text-gray-400">{product.size}</p>
-
-              {/* Specs row */}
-              <div className="flex flex-wrap gap-1.5 mt-3">
-                <div className="flex items-center gap-1 text-[11px] bg-[#2a2a2a] border border-gray-600 px-2 py-0.5 rounded-full shadow-sm">
-                  <Fuel size={12} className="text-orange-500" />
-                  <span className="text-white">{product.specs[0]}</span>
-                </div>
-                <div className="flex items-center gap-1 text-[11px] bg-[#2a2a2a] border border-gray-600 px-2 py-0.5 rounded-full shadow-sm">
-                  <Volume2 size={12} className="text-orange-500" />
-                  <span className="text-white">{product.specs[1]}</span>
-                </div>
-                <div className="flex items-center gap-1 text-[11px] bg-[#2a2a2a] border border-gray-600 px-2 py-0.5 rounded-full shadow-sm">
-                  <Droplets size={12} className="text-orange-500" />
-                  <span className="text-white">{product.specs[2]}</span>
-                </div>
-              </div>
-
-              {/* Divider */}
-              <div className="border-t border-gray-700 mt-4"></div>
-
-              {/* Delivery */}
-              <div className="flex items-center text-gray-400 text-xs mt-2">
-                <Truck size={14} className="mr-1 text-orange-500" />
-                <span>Varying delivery times</span>
-              </div>
-
-              {/* Price */}
-              <p className="mt-3 font-bold text-lg text-orange-500">
-                From {product.price}
-                <span className="text-gray-400 text-xs font-normal"> /pc</span>
-              </p>
-
-              {/* CTA Button */}
-              <button
-                className="mt-auto self-end p-2.5 bg-orange-500 text-white rounded-full 
-                     shadow-sm hover:shadow-md transition-all duration-300 hover:scale-110 hover:bg-orange-600"
-              >
-                <ArrowRight size={16} />
-              </button>
-            </div>
-          ))}
-        </div>
+        {/* Products - List View - Responsive */}
+        {viewMode === "list" && (
+          <div className="space-y-4">
+            {sortedProducts.map((product) => (
+              <ProductListCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
 
         {/* No results message */}
         {sortedProducts.length === 0 && (
@@ -832,7 +1223,7 @@ Om du behöver hjälp så kan du alltid kontakta oss via chatt, mail eller på 0
         )}
       </div>
 
-
+      {/* Rest of the components remain the same */}
       <section className="w-full bg-[#0d0d0d] py-5 poppins-regular text-white">
         {/* Products */}
         <div className="mt-10 px-2 md:px-3 lg:px-4">
@@ -1034,7 +1425,6 @@ Om du behöver hjälp så kan du alltid kontakta oss via chatt, mail eller på 0
           </a>
         </div>
       </section>
-
     </div>
   );
 };

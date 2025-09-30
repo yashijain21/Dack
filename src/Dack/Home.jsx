@@ -6,6 +6,7 @@ import DackTyreFeature from "./DackTyreFeature";
 import DackFaq from "./dackfaq";
 import DackSurveySection from "./DackSurveySection";
 import DackTyreMoreService from "./DackTyreMoreService";
+import Footer from "./Footer";
 
 
 const Home = () => {
@@ -18,6 +19,7 @@ const Home = () => {
       <DackFaq />
       <DackSurveySection />
       <DackTyreMoreService />
+      <Footer />
     </div>
   )
 }
