@@ -7,11 +7,13 @@ import DackFaq from "./dackfaq";
 import DackSurveySection from "./DackSurveySection";
 import DackTyreMoreService from "./DackTyreMoreService";
 import Footer from "./Footer";
+import Header from "./Header";
 
 
 const Home = () => {
   return (
    <div>
+    <Header />
     <DackHeroSection />
       <DackTyreSection />
       <DackTyreService />
