@@ -8,6 +8,12 @@ export default function TireProductPage({ productId = "68e38c1907ca86685afcb6c0"
   const [faqCategory, setFaqCategory] = useState("Alla frågor");
   const [showFitModal, setShowFitModal] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [regNumber, setRegNumber] = useState("");
+  const [error, setError] = useState("");
+  const [showAppointmentForm, setShowAppointmentForm] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -26,6 +32,35 @@ export default function TireProductPage({ productId = "68e38c1907ca86685afcb6c0"
   const toggleSection = (section) => {
     setOpenSection(openSection === section ? null : section);
   };
+
+  const handleInputChange = (e) => {
+    let value = e.target.value.toUpperCase();
+    if (value.length <= 3) value = value.replace(/[^A-Z]/g, "");
+    if (value.length > 3) {
+      const letters = value.slice(0, 3);
+      let numbers = value.slice(3, 6).replace(/[^0-9]/g, "");
+      value = letters + numbers;
+    }
+    setRegNumber(value);
+
+    if (value.length === 6 && !/^[A-Z]{3}[0-9]{3}$/.test(value)) {
+      setError("Registreringsnummer måste vara 3 bokstäver följt av 3 siffror");
+    } else {
+      setError("");
+    }
+  };
+
+  const handleSubmit = () => {
+    if (!/^[A-Z]{3}[0-9]{3}$/.test(regNumber)) {
+      setError("Registreringsnummer måste vara 3 bokstäver följt av 3 siffror");
+      return;
+    }
+    // Hide registration modal and show appointment form
+    setShowFitModal(false);
+    setShowAppointmentForm(true);
+  };
+
+
 
   if (loading) return <div className="text-center text-gray-400 p-10">Loading product...</div>;
   if (!productData) return <div className="text-center text-red-500 p-10">Product not found.</div>;
@@ -118,11 +153,10 @@ export default function TireProductPage({ productId = "68e38c1907ca86685afcb6c0"
                               <button
                                 key={faq._id.$oid}
                                 onClick={() => setFaqCategory(faq.category)}
-                                className={`px-3 py-1 rounded-full text-sm ${
-                                  faqCategory === faq.category
-                                    ? "bg-orange-600 text-white"
-                                    : "bg-gray-700 text-gray-200"
-                                }`}
+                                className={`px-3 py-1 rounded-full text-sm ${faqCategory === faq.category
+                                  ? "bg-orange-600 text-white"
+                                  : "bg-gray-700 text-gray-200"
+                                  }`}
                               >
                                 {faq.category}
                               </button>
@@ -205,27 +239,98 @@ export default function TireProductPage({ productId = "68e38c1907ca86685afcb6c0"
             >
               <X className="w-6 h-6" />
             </button>
-            <h2 className="text-xl font-semibold text-center text-black mb-6">Hitta rätt däck till din bil</h2>
-            <label className="block text-sm font-medium text-gray-800 mb-2">Fyll i ditt registreringsnummer</label>
-            <div className="flex items-center border border-gray-300 rounded-md overflow-hidden mb-6">
+            <h2 className="text-xl font-semibold text-center text-black mb-6">
+              Hitta rätt däck till din bil
+            </h2>
+            <label className="block text-sm font-medium text-gray-800 mb-2">
+              Fyll i ditt registreringsnummer
+            </label>
+            <div className="flex items-center border border-gray-300 rounded-md overflow-hidden mb-2">
               <div className="bg-blue-700 flex flex-col items-center justify-center px-3 py-2 text-white font-semibold">
                 <span className="text-xs">EU</span>
                 <span className="text-lg font-bold">S</span>
               </div>
               <input
                 type="text"
-                placeholder="ABC 123"
+                value={regNumber}
+                onChange={handleInputChange}
+                placeholder="ABC123"
                 className="flex-1 px-4 py-3 text-lg text-gray-800 placeholder-gray-400 focus:outline-none"
+                maxLength={6}
               />
             </div>
+            {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
             <div className="text-center">
-              <button className="text-orange-600 hover:text-orange-700 text-sm sm:text-base">
-                Eller välj däckstorlek manuellt →
+              <button
+                onClick={handleSubmit}
+                className="text-orange-600 hover:text-orange-700 text-sm sm:text-base"
+              >
+                Fortsätt
               </button>
             </div>
           </div>
         </div>
       )}
+
+      {/* Appointment Form Modal */}
+    {showAppointmentForm && (
+  <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+    <div className="bg-black rounded-xl shadow-lg w-full max-w-md p-6 relative border border-orange-600">
+      {/* Close Button */}
+      <button
+        onClick={() => setShowAppointmentForm(false)}
+        className="absolute top-3 right-3 text-gray-400 hover:text-white"
+      >
+        <X className="w-6 h-6" />
+      </button>
+
+      {/* Title */}
+      <h2 className="text-xl font-semibold mb-4 text-white text-center">
+        Boka din tid
+      </h2>
+
+      {/* Form */}
+      <form className="flex flex-col gap-3">
+        <input
+          type="text"
+          placeholder="Namn"
+          className="bg-black text-white placeholder-gray-400 border-b border-gray-600 p-2 focus:border-orange-500 focus:outline-none"
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          className="bg-black text-white placeholder-gray-400 border-b border-gray-600 p-2 focus:border-orange-500 focus:outline-none"
+        />
+        <input
+  type="tel"
+  placeholder="Telefonnummer"
+  value={phoneNumber}
+  onChange={(e) => {
+    const onlyNums = e.target.value.replace(/[^0-9]/g, "");
+    setPhoneNumber(onlyNums);
+  }}
+  className="bg-black text-white placeholder-gray-400 border-b border-gray-600 p-2 focus:border-orange-500 focus:outline-none"
+/>
+
+        <input
+          type="text"
+          placeholder="Föredragen tid"
+          className="bg-black text-white placeholder-gray-400 border-b border-gray-600 p-2 focus:border-orange-500 focus:outline-none"
+        />
+        <button
+          type="submit"
+          className="bg-orange-600 text-black font-semibold p-2 rounded-md hover:bg-orange-700 mt-2"
+        >
+          Boka tid
+        </button>
+      </form>
+    </div>
+  </div>
+)}
+
+
+
+
     </div>
   );
 }
