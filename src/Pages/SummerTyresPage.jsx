@@ -23,98 +23,7 @@ import MoreTyres1 from "../assets/Pages/SummerTyres/about-tyres/summer-about-tyr
 import MoreTyres2 from "../assets/Pages/SummerTyres/about-tyres/summer-about-tyres-2.avif";
 import MoreTyres3 from "../assets/Pages/SummerTyres/about-tyres/summer-about-tyres-3.avif";
 
-const products = [
-  {
-    id: 1,
-    name: "GoodYear Eagle F1 Asymmetric 6",
-    size: "225/45R17 91Y +141",
-    price: "2,007 SEK",
-    image: demoImage,
-    specs: ["C", "B", "A"],
-    brand: "GoodYear",
-    wetGrip: "A",
-    soundLevel: "B",
-    fuelEconomy: "C",
-    isPunctureFree: false,
-    isReinforced: true,
-    priceValue: 2007,
-  },
-  {
-    id: 2,
-    name: "Continental UltraContact",
-    size: "175/65R14 82T +113",
-    price: "1,599 SEK",
-    image: demoImage,
-    specs: ["D", "B", "B"],
-    brand: "Continental",
-    wetGrip: "B",
-    soundLevel: "B",
-    fuelEconomy: "D",
-    isPunctureFree: true,
-    isReinforced: false,
-    priceValue: 1599,
-  },
-  {
-    id: 3,
-    name: "Bridgestone Turanza 6",
-    size: "205/55R16 91V +124",
-    price: "2,093 SEK",
-    image: demoImage,
-    specs: ["C", "A", "A"],
-    brand: "Bridgestone",
-    wetGrip: "A",
-    soundLevel: "A",
-    fuelEconomy: "C",
-    isPunctureFree: false,
-    isReinforced: true,
-    priceValue: 2093,
-  },
-  {
-    id: 4,
-    name: "Continental Premium Contact 7",
-    size: "205/55R16 91H +65",
-    price: "1,899 SEK",
-    image: demoImage,
-    specs: ["B", "B", "A"],
-    brand: "Continental",
-    wetGrip: "A",
-    soundLevel: "B",
-    fuelEconomy: "B",
-    isPunctureFree: true,
-    isReinforced: true,
-    priceValue: 1899,
-  },
-  {
-    id: 5,
-    name: "Michelin Pilot Sport 4",
-    size: "235/40R18 95Y +167",
-    price: "2,345 SEK",
-    image: demoImage,
-    specs: ["B", "A", "A"],
-    brand: "Michelin",
-    wetGrip: "A",
-    soundLevel: "A",
-    fuelEconomy: "B",
-    isPunctureFree: true,
-    isReinforced: false,
-    priceValue: 2345,
-  },
-  {
-    id: 6,
-    name: "Pirelli P Zero",
-    size: "245/35R19 93Y +189",
-    price: "2,567 SEK",
-    image: demoImage,
-    specs: ["C", "B", "A"],
-    brand: "Pirelli",
-    wetGrip: "A",
-    soundLevel: "B",
-    fuelEconomy: "C",
-    isPunctureFree: false,
-    isReinforced: true,
-    priceValue: 2567,
-  },
-];
+
 
 const SummerTyreProducts = [
   {
@@ -263,9 +172,31 @@ const SummerTyresPage = () => {
   const [priceModalOpen, setPriceModalOpen] = useState(false);
   const [viewMode, setViewMode] = useState("grid"); // "grid" or "list"
   const [modalPriceRange, setModalPriceRange] = useState([1000, 10000]);
-
+const [products, setProducts] = useState([]);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState(null);
   const min = 1000;
   const max = 10000;
+  useEffect(() => {
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("https://dack-backend-1.onrender.com/api/products"); // replace with your API
+      if (!response.ok) {
+        throw new Error("Failed to fetch products");
+      }
+      const data = await response.json();
+      setProducts(data); // assuming your API returns an array of products
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProducts();
+}, []);
+
 
   // Initialize modal price range when modal opens
   useEffect(() => {
@@ -445,24 +376,30 @@ Om du behöver hjälp så kan du alltid kontakta oss via chatt, mail eller på 0
 `;
 
   // Product Card Component for Grid View
-  const ProductGridCard = ({ product }) => (
+  // Product Card Component for Grid View
+const ProductGridCard = ({ product }) => {
+  // Convert specifications object into an array of key-value pairs (skip _id)
+  const specs = product.specifications
+    ? Object.entries(product.specifications).filter(([key]) => key !== "_id")
+    : [];
+
+  return (
     <div className="group bg-[#1a1a1a] border border-gray-700 shadow-sm hover:shadow-orange-500/20 
                    rounded-xl p-4 flex flex-col transition-all duration-300 hover:-translate-y-1 hover:border-orange-500">
       {/* Image */}
       <div className="relative flex items-center justify-center p-3 bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] rounded-xl shadow-inner overflow-hidden">
         <img
-          src={product.image}
+          src={product.productImage || product.image}
           alt={product.name}
           className="w-28 h-28 object-contain transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-1"
         />
-        {/* Glow effect */}
         <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
       </div>
 
       {/* Category Badge */}
       <span className="mt-3 inline-flex items-center gap-1 bg-orange-500/20 text-orange-500 text-[11px] px-2.5 py-1 rounded-full font-medium w-max">
         <Droplets size={11} className="text-orange-500" />
-        Summer tires
+        {product.category || "Summer tires"}
       </span>
 
       {/* Title */}
@@ -470,23 +407,17 @@ Om du behöver hjälp så kan du alltid kontakta oss via chatt, mail eller på 0
         {product.name}
       </h2>
 
-      {/* Size */}
-      <p className="text-xs text-gray-400">{product.size}</p>
-
       {/* Specs row */}
       <div className="flex flex-wrap gap-1.5 mt-3">
-        <div className="flex items-center gap-1 text-[11px] bg-[#2a2a2a] border border-gray-600 px-2 py-0.5 rounded-full shadow-sm">
-          <Fuel size={12} className="text-orange-500" />
-          <span className="text-white">{product.specs[0]}</span>
-        </div>
-        <div className="flex items-center gap-1 text-[11px] bg-[#2a2a2a] border border-gray-600 px-2 py-0.5 rounded-full shadow-sm">
-          <Volume2 size={12} className="text-orange-500" />
-          <span className="text-white">{product.specs[1]}</span>
-        </div>
-        <div className="flex items-center gap-1 text-[11px] bg-[#2a2a2a] border border-gray-600 px-2 py-0.5 rounded-full shadow-sm">
-          <Droplets size={12} className="text-orange-500" />
-          <span className="text-white">{product.specs[2]}</span>
-        </div>
+        {specs.slice(0, 3).map(([key, value], index) => (
+          <div
+            key={index}
+            className="flex items-center gap-1 text-[11px] bg-[#2a2a2a] border border-gray-600 px-2 py-0.5 rounded-full shadow-sm"
+          >
+            {/* You can replace icons dynamically if needed */}
+            <span className="text-white">{value}</span>
+          </div>
+        ))}
       </div>
 
       {/* Divider */}
@@ -505,14 +436,18 @@ Om du behöver hjälp så kan du alltid kontakta oss via chatt, mail eller på 0
       </p>
 
       {/* CTA Button */}
+  <Link to={`/product/${product._id}`} className="mt-4 self-end">
       <button
-        className="mt-auto self-end p-2.5 bg-orange-500 text-white rounded-full 
-                     shadow-sm hover:shadow-md transition-all duration-300 hover:scale-110 hover:bg-orange-600"
+        className="mt-auto  p-2.5 bg-orange-500 text-white rounded-full 
+                   shadow-sm hover:shadow-md transition-all duration-300 hover:scale-110 hover:bg-orange-600"
       >
         <ArrowRight size={16} />
       </button>
+  </Link>
     </div>
   );
+};
+
 
   // Product Card Component for List View - Responsive
   const ProductListCard = ({ product }) => (

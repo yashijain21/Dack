@@ -19,7 +19,7 @@ function App() {
         <Route path="/Dack/vinterdack" element={<WinterTyresPage />} />
         <Route path="/sommarhjul" element={<SummerWheels />} />
         <Route path="/vinterhjul" element={<WinterWheels />} />
-                <Route path="/product" element={<Product />} />
+                <Route path="/product/:id" element={<Product />} />
 
 
 
