@@ -35,12 +35,6 @@ const TireSection = () => {
               Both your driving habits and driving conditions matter. We&apos;ll
               explain what you should consider.
             </p>
-            <a
-              href="#"
-              className="block w-full text-center px-6 py-3 rounded-lg bg-orange-500 text-white text-sm font-medium hover:bg-orange-600 transition"
-            >
-              Läs mer
-            </a>
           </div>
         </div>
 
@@ -61,12 +55,7 @@ const TireSection = () => {
               what the speed index is and why it is important in your choice of
               tires.
             </p>
-            <a
-              href="#"
-              className="block w-full text-center px-6 py-3 rounded-lg bg-orange-500 text-white text-sm font-medium hover:bg-orange-600 transition"
-            >
-              Läs mer
-            </a>
+         
           </div>
         </div>
 
@@ -86,25 +75,12 @@ const TireSection = () => {
               to read tire markings and what factors are most important when
               selecting the right fit for your car.
             </p>
-            <a
-              href="#"
-              className="block w-full text-center px-6 py-3 rounded-lg bg-orange-500 text-white text-sm font-medium hover:bg-orange-600 transition"
-            >
-              Läs mer
-            </a>
+         
           </div>
         </div>
       </div>
 
-      {/* Bottom button */}
-      <div className="flex justify-center mt-8">
-        <a
-          href="#"
-          className="px-10 py-4 rounded-sm bg-orange-500 text-white text-base font-semibold shadow-md hover:bg-orange-600 transition-transform duration-300 hover:scale-105"
-        >
-          Fler artiklar om däck
-        </a>
-      </div>
+    
     </section>
   );
 };

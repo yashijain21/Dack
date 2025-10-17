@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 // Inline SVG Icons
 const TireIcon = () => (
   <svg
@@ -79,6 +79,7 @@ const services = [
     buttonText: "Boka tid",
     readMore: "Läs mer",
     icon: <TireIcon />,
+    link: "/verkstad/dacktjanster/dackbyte/",
   },
   {
     id: 2,
@@ -88,6 +89,7 @@ const services = [
     buttonText: "Boka förvaring",
     readMore: "Läs mer",
     icon: <DackHotelIcon />,
+    link: "/verkstad/dacktjanster/dackhotell/",
   },
   {
     id: 3,
@@ -97,6 +99,7 @@ const services = [
     buttonText: "Boka tid",
     readMore: "Läs mer",
     icon: <RimRenovationIcon />,
+    link: "/verkstad/dacktjanster/falgrenovering/",
   },
   {
     id: 4,
@@ -106,8 +109,10 @@ const services = [
     buttonText: "Boka tid",
     readMore: "Läs mer",
     icon: <WheelAlighmentIcon />,
+    link: "/verkstad/dacktjanster/hjulinstallning/",
   },
 ];
+
 
 const TireServices = () => {
   return (
@@ -144,12 +149,11 @@ const TireServices = () => {
 
             {/* Buttons */}
             <div className="mt-auto w-full space-y-2">
-              <button className="bg-orange-500 text-black font-medium py-2 px-4 rounded-md hover:bg-orange-600 transition w-full">
-                {service.buttonText}
-              </button>
-              <button className="border border-gray-600 text-gray-300 py-2 px-4 rounded-md hover:border-orange-500 hover:text-orange-500 transition w-full">
-                {service.readMore}
-              </button>
+       <Link to={service.link} className="w-full block">
+  <button className="border border-orange-500 text-orange-500 font-medium py-2 px-4 rounded-md hover:bg-orange-500 hover:text-black transition w-full">
+    {service.readMore}
+  </button>
+</Link>
             </div>
 
             {/* Badge */}
@@ -162,12 +166,6 @@ const TireServices = () => {
         ))}
       </div>
 
-      {/* Show All Button */}
-      <div className="mt-10 text-center">
-        <button className="bg-orange-500 text-black font-bold py-3 px-6 rounded-md hover:bg-orange-600 transition">
-          Visa alla
-        </button>
-      </div>
     </section>
   );
 };
