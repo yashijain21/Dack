@@ -13,7 +13,7 @@ const filters = [
     "Varumärke",
     "Pris (kr)",
     "Kampanjpris",
-    "Biliakortspris",
+    "SpeedyTyreskortspris",
     "Däckmärke",
     "Bredd",
     "Profil",
@@ -147,9 +147,7 @@ const WinterWheels = () => {
                         </button>
 
                         <div className="flex items-center gap-3">
-                            <p className="text-gray-400 text-sm whitespace-nowrap">
-                                Hittade {products.length} st
-                            </p>
+                           
                             <select className="bg-[#1c1c1c] border border-gray-700 px-3 py-1.5 text-sm rounded focus:outline-none focus:ring-2 focus:ring-orange-500 text-white">
                                 <option>Mest besökta</option>
                                 <option>stigande pris</option>
@@ -305,52 +303,9 @@ const WinterWheels = () => {
                 </div>
 
                 {/* Product Section */}
-                <section className={`flex-1 transition-all duration-300 ${isFilterOpen ? 'lg:ml-0' : 'lg:ml-0'
-                    }`}>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {products.map((p) => (
-                            <div
-                                key={p.id}
-                                className="border border-gray-700 rounded-lg shadow-sm p-4 bg-[#1c1c1c] hover:shadow-lg transition-shadow"
-                            >
-                                <img
-                                    src={p.img}
-                                    alt={p.title}
-                                    className="w-full h-40 object-cover mb-3 rounded"
-                                />
-
-                                {p.tagline && (
-                                    <h4 className="text-sm text-orange-500 font-semibold mb-1">
-                                        {p.tagline}
-                                    </h4>
-                                )}
-
-                                <h3 className="font-semibold text-base mb-1">{p.title}</h3>
-                                <p className="text-sm text-gray-300 mb-1">{p.size}</p>
-                                <p className="text-sm text-gray-300 mb-3">{p.brand}</p>
-
-                                {p.fits && (
-                                    <p className="text-sm font-medium text-white">{p.fits}</p>
-                                )}
-                                <p className="text-xs text-gray-400 mb-3">{p.delivery}</p>
-
-                                <p className="text-lg font-bold text-orange-500 mb-3">
-                                    {p.price.replace("kr", "SEK")}
-                                </p>
-
-                                {/* Köp button */}
-                                <button className="bg-orange-600 hover:bg-orange-700 text-white text-sm px-4 py-2 rounded font-semibold w-full transition-colors mb-2">
-                                    Köp
-                                </button>
-
-                                {/* Miljöavgift notice */}
-                                <p className="text-xs text-gray-400">
-                                    Miljöavgift (Återvinnavg. PV-däck sats) på 100 kr styck tillkommer.
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </section>
+              <p className="text-gray-500">
+                No products found.
+              </p>
 
             </div>
         </div>

@@ -149,93 +149,40 @@ const faqs = [
 ];
 
 const data = {
-    Stockholm: {
-        groups: [
-            {
-                name: "Prisgrupp 1",
-                price: "1.695 kr/säsong",
-                includes: "Inklusive däckbyte",
-                models: [
-                    "Toyota (exklusive Rav4, CH-R, Corolla Cross, BZ4X, Proace, Hilux och Landcruiser)",
-                    "Renault (exklusive Traffic, Master, Espace och Koleos)",
-                    "Volvo Classic (årsmodell 2019 och äldre)",
-                    "Nissan (exklusive Ariya, Qashqai, X-trail, Townstar, Primastar och Interstar)",
-                ],
-            },
-            {
-                name: "Prisgrupp 2",
-                price: "1.995 kr/säsong",
-                includes: "Inklusive däckbyte",
-                models: [
-                    "Volvo årsmodell 2020 och nyare",
-                    "BMW",
-                    "MINI",
-                    "Mercedes-Benz",
-                    "Toyota Rav4, CH-R, Corolla Cross, BZ4X, Proace, Hilux och Landcruiser",
-                    "Renault Traffic, Master, Espace och Koleos",
-                    "Nissan Ariya, Qashqai, X-trail, Townstar, Primastar och Interstar",
-                ],
-            },
-        ],
-    },
-    Göteborg: {
-        groups: [
-            {
-                name: "Prisgrupp 1",
-                price: "1.495 kr/säsong",
-                includes: "Inklusive däckbyte",
-                models: [
-                    "Toyota (exklusive Rav4, CH-R, Corolla Cross, BZ4X, Proace, Hilux och Landcruiser)",
-                    "Renault (exklusive Traffic, Master, Espace och Koleos)",
-                    "Volvo Classic (årsmodell 2019 och äldre)",
-                    "Nissan (exklusive Ariya, Qashqai, X-trail, Townstar, Primastar och Interstar)",
-                ],
-            },
-            {
-                name: "Prisgrupp 2",
-                price: "1.795 kr/säsong",
-                includes: "Inklusive däckbyte",
-                models: [
-                    "Volvo årsmodell 2020 och nyare",
-                    "BMW",
-                    "MINI",
-                    "Mercedes-Benz",
-                    "Toyota Rav4, CH-R, Corolla Cross, BZ4X, Proace, Hilux och Landcruiser",
-                    "Renault Traffic, Master, Espace och Koleos",
-                    "Nissan Ariya, Qashqai, X-trail, Townstar, Primastar och Interstar",
-                ],
-            },
-        ],
-    },
-    "Övriga landet": {
-        groups: [
-            {
-                name: "Prisgrupp 1",
-                price: "1.195 kr/säsong",
-                includes: "Inklusive däckbyte",
-                models: [
-                    "Toyota (exklusive Rav4, CH-R, Corolla Cross, BZ4X, Proace, Hilux och Landcruiser)",
-                    "Renault (exklusive Traffic, Master, Espace och Koleos)",
-                    "Volvo Classic (årsmodell 2019 och äldre)",
-                    "Nissan (exklusive Ariya, Qashqai, X-trail, Townstar, Primastar och Interstar)",
-                ],
-            },
-            {
-                name: "Prisgrupp 2",
-                price: "1.495 kr/säsong",
-                includes: "Inklusive däckbyte",
-                models: [
-                    "Volvo årsmodell 2020 och nyare",
-                    "BMW",
-                    "MINI",
-                    "Mercedes-Benz",
-                    "Toyota Rav4, CH-R, Corolla Cross, BZ4X, Proace, Hilux och Landcruiser",
-                    "Renault Traffic, Master, Espace och Koleos",
-                    "Nissan Ariya, Qashqai, X-trail, Townstar, Primastar och Interstar",
-                ],
-            },
-        ],
-    },
+
+  Göteborg: {
+    groups: [
+        {
+            name: "Bas (Prisgrupp 1)",
+            price: "995 kr/säsong",
+            includes: "Förvaring + däckbyte",
+            models: [
+                "Lockpris – bra för att dra in kunder",
+                "Perfekt för mindre personbilar"
+            ],
+        },
+        {
+            name: "Standard (Prisgrupp 2)",
+            price: "1.195 kr/säsong",
+            includes: "Förvaring + däckbyte + hjultvätt",
+            models: [
+                "Liten uppgradering",
+                "Ett populärt val många kommer att välja"
+            ],
+        },
+        {
+            name: "Premium (Prisgrupp 3)",
+            price: "1.495 kr/säsong",
+            includes: "Förvaring + däckbyte + hjultvätt + balansering",
+            models: [
+                "Högre marginal",
+                "Särskilt attraktivt för SUV:ar och elbilar"
+            ],
+        },
+    ],
+}
+
+   
 };
 
 
@@ -250,7 +197,7 @@ const DackHotel = () => {
     const [selectedTime, setSelectedTime] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const navigate = useNavigate();
-    const [activeCity, setActiveCity] = useState("Stockholm");
+    const [activeCity, setActiveCity] = useState("Göteborg");
 
     const cityData = data[activeCity];
     const [formData, setFormData] = useState({
@@ -377,7 +324,7 @@ const DackHotel = () => {
 
     return (
         <div className="poppins-regular">
-            <Header />
+         
 
             {/* Hero Section */}
             <section className="w-full bg-[#2c3e50] flex flex-col md:flex-row items-center justify-between relative">
@@ -405,10 +352,10 @@ const DackHotel = () => {
             <section className="w-full bg-black text-white py-16 px-6">
                 <div className="max-w-5xl mx-auto text-center">
                     <h2 className="text-3xl font-bold text-orange-500 mb-6">
-                        Däckförvaring på Bilia Däckhotell
+                        Däckförvaring på SpeedyTyres Däckhotell
                     </h2>
                     <p className="text-lg text-gray-300 leading-relaxed">
-                        Däckförvaring på Bilia däckhotell är enkelt och bekvämt.
+                        Däckförvaring på SpeedyTyres däckhotell är enkelt och bekvämt.
                         Du sparar tid, arbete och utrymme. Vi tar hand om dina sommar-
                         och vinterdäck och förvarar dem i rätt temperatur, luftfuktighet
                         och i skydd från solen.
@@ -420,38 +367,28 @@ const DackHotel = () => {
             {/* Info Section */}
             <section className="py-12 bg-black px-6 text-center text-white">
                 <h1 className="text-2xl md:text-3xl font-semibold mb-4">
-                    Prova på däckhotell för 495 kr
+                    Prova på däckhotell för 455 kr
                 </h1>
 
-                <p className="text-base md:text-lg mb-4">
-                    Boka däckbyte och prova på vår däckförvaring på vårt däckhotell. Vi bjuder på första säsongen däckförvaring och du betalar bara 495 kr för däckbytet.
-                </p>
-                <p className="text-base md:text-lg">
-                    Erbjudandet om att prova på däckhotell för endast 495 kr för första säsongen, gäller nya kunder samt dig som inte har haft dina däck på däckhotellet de senaste två säsongerna. Vi tar in dina däck för förvaring i samband med däckbytet. Till dig som befintlig kund kan vi erbjuda andra förmåner så som 15% rabatt på nya sommar- och vinterdäck.
-                </p>
+               <p className="text-base md:text-lg mb-4">
+  Boka däckbyte och prova vår däckförvaring på vårt däckhotell. Vi bjuder på första säsongen däckförvaring och du betalar endast 349 kr för däckbytet.
+  Erbjudandet gäller endast i Göteborg.
+</p>
+
+<p className="text-base md:text-lg">
+  Erbjudandet om att prova på däckhotell för endast 349 kr för första säsongen gäller nya kunder samt dig som inte har haft dina däck på däckhotellet de senaste två säsongerna. Vi tar emot dina däck för förvaring i samband med däckbytet. Som befintlig kund erbjuder vi andra förmåner, såsom 15% rabatt på nya sommar- och vinterdäck. 
+  Erbjudandet gäller endast i Göteborg.
+</p>
+
             </section>
 
 
             <section className="bg-black py-10 px-4 md:px-8">
                 <div className="max-w-6xl mx-auto">
-                    {/* Tabs */}
-                    <div className="flex justify-center  gap-10 border-b border-orange-500 mb-10">
-                        {Object.keys(data).map((city) => (
-                            <button
-                                key={city}
-                                onClick={() => setActiveCity(city)}
-                                className={`text-lg font-semibold pb-2 transition relative ${activeCity === city
-                                    ? "text-white after:content-[''] after:absolute after:bottom-[-1px] after:left-0 after:w-full after:h-[3px] after:bg-orange-500"
-                                    : "text-gray-400 hover:text-white"
-                                    }`}
-                            >
-                                {city}
-                            </button>
-                        ))}
-                    </div>
+                
 
                     {/* Pricing groups */}
-                    <div className="grid md:grid-cols-2 gap-8">
+                    <div className="grid md:grid-cols-3 gap-8">
                         {cityData.groups.map((group, index) => (
                             <div
                                 key={index}
@@ -502,34 +439,30 @@ const DackHotel = () => {
                     Här ser du de särskilda tillvalstjänsterna du kan välja till ditt däckhotell. Kryssa i ditt önskemål vid bokningen.
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-                    {/* Card 1 */}
-                    <div className="bg-[#1a1a1a] p-4 rounded-lg shadow-md border border-orange-500 flex flex-col">
-                        <h3 className="font-semibold mb-5 text-base text-white">Guld</h3>
-                        <p className="text-sm mb-5 text-gray-300">
-                            Vi balanserar, handtvättar och vaxar hjulen för att hålla dem i toppskick. Hjulen får den ultimata behandlingen och blir både stadiga, rena och får en längre hållbarhet.
-                        </p>
-                        <p className="text-sm text-gray-300">1.590 kr</p>
-                    </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 w-full">
 
-                    {/* Card 2 */}
-                    <div className="bg-[#1a1a1a] p-4 rounded-lg shadow-md border border-orange-500 flex flex-col">
-                        <h3 className="font-semibold mb-5 text-base text-white">Silver</h3>
-                        <p className="text-sm mb-5 text-gray-300">
-                            Balansering av dina hjul. Vi säkerställer att den obalans som hjulen har försvinner och de blir redo för en ny säsong.
-                        </p>
-                        <p className="text-sm text-gray-300">795 kr</p>
-                    </div>
+    {/* Hjultvätt (Handtvätt) */}
+    <div className="bg-[#1a1a1a] p-4 rounded-lg shadow-md border border-orange-500 flex flex-col">
+        <h3 className="font-semibold mb-5 text-base text-white">Hjultvätt (Handtvätt)</h3>
+        <p className="text-sm mb-5 text-gray-300">
+            Gör hjulen rena från salt, smuts och bromsdamm. Förlänger livslängden och ger ett fräschare utseende.
+        </p>
+        <p className="text-sm text-gray-300">149 kr</p>
+    </div>
 
-                    {/* Card 3 */}
-                    <div className="bg-[#1a1a1a] p-4 rounded-lg shadow-md border border-orange-500 flex flex-col">
-                        <h3 className="font-semibold mb-5 text-base text-white">Handtvätt</h3>
-                        <p className="text-sm mb-5 text-gray-300">
-                            Vi handtvättar dina hjul så de blir skinande rena och får en längre livslängd.
-                        </p>
-                        <p className="text-sm text-gray-300">795 kr</p>
-                    </div>
-                </div>
+    {/* Balansering (Silver) */}
+    <div className="bg-[#1a1a1a] p-4 rounded-lg shadow-md border border-orange-500 flex flex-col">
+        <h3 className="font-semibold mb-5 text-base text-white">Balansering (Silver)</h3>
+        <p className="text-sm mb-5 text-gray-300">
+            Motverkar vibrationer i ratten och ger en mjukare, tystare körning. Rekommenderas vid montering av däck.
+        </p>
+        <p className="text-sm text-gray-300">295 kr</p>
+    </div>
+
+ 
+
+</div>
+
             </section>
 
 
@@ -538,7 +471,7 @@ const DackHotel = () => {
                 {/* Image */}
                 <div className="md:w-2/5 w-full">
                     <img
-                        src={tireImg}
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR5ezc60JrZT37sm92JeWwkWq-yG8-NxrChw&s"
                         alt="Nya däck"
                         className="w-full h-[220px] md:h-[260px] object-cover rounded-lg border border-orange-500 shadow-sm"
                     />
@@ -563,13 +496,13 @@ const DackHotel = () => {
             </section>
 
 
-            {/* Bilia Däckhotell Section */}
+            {/* SpeedyTyres Däckhotell Section */}
             <section className="flex flex-col md:flex-row-reverse items-center bg-black py-6 px-4 md:px-8 gap-6">
                 {/* Image */}
                 <div className="md:w-2/5 w-full">
                     <img
                         src={tireImg}
-                        alt="Bilia Däckhotell"
+                        alt="SpeedyTyres Däckhotell"
                         className="w-full h-[220px] md:h-[260px] object-cover rounded-lg border border-orange-500 shadow-sm"
                     />
                 </div>
@@ -577,13 +510,13 @@ const DackHotel = () => {
                 {/* Text Content */}
                 <div className="md:w-3/5 w-full text-center md:text-left">
                     <h2 className="text-lg md:text-2xl font-bold text-white mb-4">
-                        Vad ingår hos Bilia däckhotell?
+                        Vad ingår hos SpeedyTyres däckhotell?
                     </h2>
                     <ul className="text-white text-sm md:text-base list-disc list-inside mb-4 leading-relaxed">
                         <li>Däckbyte.</li>
                         <li>Grovrengöring av däck.</li>
                         <li>Kontroll av lufttryck, mönsterdjup och fälgar.</li>
-                        <li>SMS med bilder på dina däckmönster och fälgar.</li>
+                        
                     </ul>
                 </div>
             </section>
@@ -665,7 +598,7 @@ const DackHotel = () => {
                                     Däckhotell på köpet
                                 </h3>
                                 <p className="text-gray-300 text-sm leading-relaxed">
-                                    Nu får du som väljer att göra en fälgrenovering en hel säsong kostnadsfritt på Bilia däckhotell. Erbjudandet gäller nya däckhotellskunder.
+                                    Nu får du som väljer att göra en fälgrenovering en hel säsong kostnadsfritt på SpeedyTyres däckhotell. Erbjudandet gäller nya däckhotellskunder.
                                 </p>
                             </div>
 
@@ -960,7 +893,7 @@ Vi tar emot däck från alla bil- och däckmärken. De bilmärken vi samarbetar 
 
 
 
-            <Footer />
+       
         </div>
     );
 };

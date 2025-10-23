@@ -6,7 +6,8 @@ import { ChevronDown, ChevronUp, X } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import Header from "../Dack/Header";
+import Footer from "../Dack/Footer";
 export default function TireProductPage() {
   const [productData, setProductData] = useState(null);
   const [openSection, setOpenSection] = useState(null);
@@ -115,6 +116,7 @@ export default function TireProductPage() {
 
   return (
     <div className="bg-black min-h-screen p-4 sm:p-6 poppins-regular text-white">
+ 
       <ToastContainer />
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
         {/* Left Column */}
@@ -463,6 +465,7 @@ export default function TireProductPage() {
           </div>
         </div>
       )}
+
     </div>
   );
 }

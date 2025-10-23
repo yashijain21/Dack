@@ -30,25 +30,25 @@ const SummerTyreProducts = [
     title: "Byta däck",
     description: "Däckbyte utfört av experter.",
     image: summerTyre,
-    link: "/sommardack",
+    link: "/verkstad/dacktjanster/dackbyte/"
   },
   {
     title: "Förvara däck",
     description: "Däckförvaring i bra förhållanden.",
     image: winterTyre,
-    link: "/vinterdack",
+    link: "/verkstad/dacktjanster/deckhotell/"
   },
   {
     title: "Kolla hjulvinklarna",
     description: "Kontroll av hjulens vinklar.",
     image: summerWheel,
-    link: "/sommarhjul",
+    link: "/verkstad/dacktjanster/hjulinstallning/"
   },
   {
     title: "Renovera fälgarna",
     description: "Reparation av skadade fälgar.",
     image: winterWheel,
-    link: "/vinterhjul",
+    link:" /verkstad/dacktjanster/falgrenovering/",
   },
 ];
 
@@ -120,7 +120,7 @@ const faqs = [
   {
     question: "Jag vill köpa lösa däck, hur gör jag då?",
     answer:
-      "Alla däck i vår webbshop behöver montering och balansering på din befintliga eller nya fälg. För tillfället kan du inte köpa lösa däck utan montering hos oss på bilia.se, däremot kan du besöka din anläggning för att hitta lösa däck dom kan ha lokalt på plats. Dem däcken kan du köpa löst.",
+      "Alla däck i vår webbshop behöver montering och balansering på din befintliga eller nya fälg. För tillfället kan du inte köpa lösa däck utan montering hos oss på SpeedyTyres.se, däremot kan du besöka din anläggning för att hitta lösa däck dom kan ha lokalt på plats. Dem däcken kan du köpa löst.",
   },
   {
     question: "Kan jag blanda olika däck på min bil?",
@@ -1287,13 +1287,14 @@ const ProductGridCard = ({ product }) => {
               className="h-56 w-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
             <div className="p-6 flex flex-col flex-grow">
-              <h3 className="text-xl font-semibold mb-3 text-white">
-                Behöver elbilar särskilda däck?
-              </h3>
-              <p className="text-base text-gray-400 mb-6 flex-grow">
-                Elbilar väger mer och har andra köregenskaper än fossildrivna bilar.
-                Vår däckexpert har råden till dig som ska välja däck till elbil.
-              </p>
+             <h3 className="text-xl font-semibold mb-3 text-white">
+  Behöver elbilar särskilda däck?
+</h3>
+<p className="text-base text-gray-400 mb-6 flex-grow">
+  Elbilar väger mer och har andra köregenskaper än traditionella fordon.
+  Vår däckexpert ger dig råd om vilka däck som passar bäst för elbil.
+</p>
+
               <a
                 href="#"
                 className="block w-full text-center px-6 py-3 rounded-lg bg-orange-500 text-white text-sm font-medium hover:bg-orange-600 transition"
@@ -1311,12 +1312,14 @@ const ProductGridCard = ({ product }) => {
               className="h-56 w-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
             <div className="p-6 flex flex-col flex-grow">
-              <h3 className="text-xl font-semibold mb-3 text-white">
-                Vilket lufttryck ska du ha i däcken?
-              </h3>
-              <p className="text-base text-gray-400 mb-6 flex-grow">
-                Med rätt däcktryck rullar bilen bättre och körningen blir mer säker och ekonomisk. Med för lågt eller högt tryck ökar olycksrisken, slitaget och bränsleförbrukningen.
-              </p>
+           <h3 className="text-xl font-semibold mb-3 text-white">
+  Vilket lufttryck ska du ha i däcken?
+</h3>
+<p className="text-base text-gray-400 mb-6 flex-grow">
+  Rätt däcktryck ger bättre väghållning, längre livslängd och lägre bränsleförbrukning.
+  Felaktigt tryck ökar risken för olyckor och onödigt slitage.
+</p>
+
               <a
                 href="#"
                 className="block w-full text-center px-6 py-3 rounded-lg bg-orange-500 text-white text-sm font-medium hover:bg-orange-600 transition"
@@ -1334,12 +1337,14 @@ const ProductGridCard = ({ product }) => {
               className="h-56 w-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
             <div className="p-6 flex flex-col flex-grow">
-              <h3 className="text-xl font-semibold mb-3 text-white">
-                Mönsterdjup på däck
-              </h3>
-              <p className="text-base text-gray-400 mb-6 flex-grow">
-                Bra däck är avgörande för säkerheten. Kontrollera mönsterdjupet regelbundet för bästa grepp och kortast möjliga bromssträcka.
-              </p>
+          <h3 className="text-xl font-semibold mb-3 text-white">
+  Mönsterdjup på däck
+</h3>
+<p className="text-base text-gray-400 mb-6 flex-grow">
+  Ett korrekt mönsterdjup är avgörande för säkerheten. Kontrollera däcken regelbundet
+  för bästa grepp och kortast möjliga bromssträcka i alla väder.
+</p>
+
               <a
                 href="#"
                 className="block w-full text-center px-6 py-3 rounded-lg bg-orange-500 text-white text-sm font-medium hover:bg-orange-600 transition"

@@ -364,7 +364,7 @@ const RimRestoration = () => {
 
     return (
         <div className="poppins-regular">
-            <Header />
+       
 
             {/* Hero Section */}
             <section className="w-full bg-[#2c3e50] flex flex-col md:flex-row items-center justify-between relative">
@@ -416,7 +416,7 @@ const RimRestoration = () => {
 
                     {/* Card 2 */}
                     <div className="bg-[#1a1a1a] p-4 rounded-lg shadow-md border border-orange-500 flex flex-col">
-                        <h3 className="font-semibold mb-5 text-base text-white">Från 2.739 kr/fälg</h3>
+                        <h3 className="font-semibold mb-5 text-base text-white">Från 995 kr/styck</h3>
                         <p className="text-sm mb-5 text-gray-300">
                             Priset påverkas av fälgarnas storlek och i vilket behov av renovering de är.
                         </p>
@@ -608,7 +608,6 @@ Vanliga frågor och svar
 
          
 
-            <Footer />
         </div>
     );
 };

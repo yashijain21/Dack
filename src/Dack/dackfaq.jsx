@@ -31,7 +31,7 @@ const faqs = [
   {
     question: "Jag vill köpa lösa däck, hur gör jag då?",
     answer:
-      "Alla däck i vår webbshop behöver montering och balansering på din befintliga eller nya fälg. För tillfället kan du inte köpa lösa däck utan montering hos oss på bilia.se, däremot kan du besöka din anläggning för att hitta lösa däck dom kan ha lokalt på plats. Dem däcken kan du köpa löst.",
+      "Alla däck i vår webbshop behöver montering och balansering på din befintliga eller nya fälg. För tillfället kan du inte köpa lösa däck utan montering hos oss på SpeedyTyres.se, däremot kan du besöka din anläggning för att hitta lösa däck dom kan ha lokalt på plats. Dem däcken kan du köpa löst.",
   },
   {
     question: "Hur påverkar däcken bilens egenskaper?",

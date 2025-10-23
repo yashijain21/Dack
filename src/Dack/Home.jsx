@@ -14,14 +14,14 @@ import Header from "./Header";
 const Home = () => {
   return (
    <div>
-    <Header />
+    
     <DackHeroSection />
       <DackTyreSection />
       <DackTyreService />
       <DackTyreFeature />
       <DackFaq />
       <DackTyreMoreService />
-      <Footer />
+      
     </div>
   )
 }

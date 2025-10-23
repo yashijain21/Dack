@@ -317,7 +317,7 @@ const handleSubmit = async (e) => {
 
   return (
     <div className="poppins-regular">
-      <Header />
+  
 
       {/* Hero Section */}
       <section className="w-full bg-[#2c3e50] flex flex-col md:flex-row items-center justify-between relative">
@@ -860,7 +860,6 @@ const handleSubmit = async (e) => {
       )}
 
 
-      <Footer />
     </div>
   );
 };

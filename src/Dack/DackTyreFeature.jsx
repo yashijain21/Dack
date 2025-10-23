@@ -84,8 +84,8 @@ const features = [
   {
     id: 1,
     icon: <HomeDeliveryIcon />,
-    title: "Fri hemleverans",
-    description: "Fraktfri hemleverans av kompletta hjul.",
+    title: "Fri frakt",
+    description: "Fri frakt i hela Göteborg.",
   },
   {
     id: 2,
@@ -115,7 +115,7 @@ const features = [
     id: 6,
     icon: <AvailabilityIcon />,
     title: "Tillgänglighet",
-    description: "Anläggningar över hela Sverige.",
+    description: "Vi finns bara i Göteborg.",
   },
   {
     id: 7,

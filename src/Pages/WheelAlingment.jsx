@@ -114,7 +114,7 @@ const faqs = [
     {
         question: "Vilka bilmärken gör ni hjulinställning på?",
         answer: [
-            "Vi på Bilia är certifierade och kan hjälpa dig med hjulinställning på din bil på våra auktoriserade verkstäder för bland annat Volvo, Renault, BMW, Toyota och Mercedes-Benz.",
+            "Vi på SpeedyTyres är certifierade och kan hjälpa dig med hjulinställning på din bil på våra auktoriserade verkstäder för bland annat Volvo, Renault, BMW, Toyota och Mercedes-Benz.",
         ],
     },
 
@@ -250,7 +250,7 @@ const WheelAlingment = () => {
 
     return (
         <div className="poppins-regular">
-            <Header />
+           
 
             {/* Hero Section */}
             <section className="w-full bg-[#2c3e50] flex flex-col md:flex-row items-center justify-between relative">
@@ -291,7 +291,7 @@ const WheelAlingment = () => {
 
                 <p className="text-base text-center md:text-lg mb-4">
                     Från
-                    1.295 kr
+                    995 kr
                 </p>
 
             </section>
@@ -792,7 +792,7 @@ const WheelAlingment = () => {
 
 
 
-            <Footer />
+            
         </div>
     );
 };

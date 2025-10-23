@@ -399,31 +399,13 @@ const ProductGridCard = ({ product }) => (
           </div>
         </div>
 
-        {/* Product Count */}
-        <div className="flex justify-between items-center my-6">
-          <p className="text-gray-400">{products.length} Products</p>
-        </div>
+
 
         {/* Products Grid */}
         {/* Friction Tires Section */}
-<section className="mt-8">
-  <div className="flex justify-between items-center mb-4">
-    <h2 className="text-2xl font-semibold text-white border-l-4 border-orange-500 pl-3">
-      Friction tires
-    </h2>
-    <p className="text-gray-400">
-      {products.filter(p => p.category === "Friction tires").length} Products
-    </p>
-  </div>
-
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-    {products
-      .filter(p => p.category === "Friktionsdäck")
-      .map(product => (
-        <ProductGridCard key={product.id} product={product} />
-      ))}
-  </div>
-</section>
+<p className="mt-10 text-gray-400">
+  No products found in this category.
+</p>
 
 {/* Studded Tires Section */}
 <section className="mt-10">
